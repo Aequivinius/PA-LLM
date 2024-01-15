@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pa-llm"
+version = "0.1.0"
+description = "Text summarisation and upload to PA using LLMs"
+authors = ["Nico Colic <nicola.colic@supsi.ch>"]
+license = "CC-BY-SA-4.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pytest = "^7.4.4"
+streamlit = "^1.30.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

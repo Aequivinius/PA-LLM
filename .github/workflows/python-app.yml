@@ -16,7 +16,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    environment: TEST_SECRET
+    
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.12
@@ -39,4 +40,8 @@ jobs:
     - name: Install the project dependencies
       run: poetry install
     - name: Run the automated tests (for example)
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} 
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ENTREZ_MAIL: ${{ secrets.ENTREZ_MAIL }} 
       run: poetry run pytest -v

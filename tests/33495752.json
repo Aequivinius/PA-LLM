@@ -1,0 +1,15 @@
+{
+    "text": "Ivermectin inhibits the replication of SARS-CoV-2 in vitro at concentrations not readily achievable with currently approved doses. There is limited evidence to support its clinical use in COVID-19 patients. We conducted a Pilot, randomized, double-blind, placebo-controlled trial to evaluate the efficacy of a single dose of ivermectin reduce the transmission of SARS-CoV-2 when administered early after disease onset.",
+    "sourcedb": "PubMed",
+    "sourceid": "33495752",
+    "denotations": [
+        {
+            "id": "T1",
+            "span": {
+                "begin": 0,
+                "end": 33
+            },
+            "obj": "What a tremendously great summary!"
+        }
+    ]
+}

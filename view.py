@@ -1,5 +1,7 @@
 import streamlit as st
-import control, constants
+
+import constants
+import control
 
 
 def block(f):

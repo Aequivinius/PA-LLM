@@ -1,4 +1,5 @@
-import view, control
+import control
+import view
 
 control.session_states()
 

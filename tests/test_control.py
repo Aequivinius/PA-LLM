@@ -1,5 +1,6 @@
-from streamlit.testing.v1 import AppTest
 import os
+
+from streamlit.testing.v1 import AppTest
 
 DEFAULT_TIMEOUT = 10
 

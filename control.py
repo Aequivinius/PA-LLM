@@ -1,8 +1,11 @@
-from Bio import Entrez
-from streamlit import cache_data, session_state, secrets
-import constants
+from typing import Union
+
 import google.generativeai as genai
+from Bio import Entrez
 from openai import OpenAI as openai
+from streamlit import cache_data, secrets, session_state
+
+import constants
 
 Entrez.email = "nicola.colic@supsi.ch"
 genai.configure(api_key=secrets["GEMINI_API_KEY"])
@@ -35,23 +38,18 @@ def fetch_abstract() -> None:
 
 
 @cache_data
-def fetch_abstract_(pmid: int) -> str:
+def fetch_abstract_(pmid: int) -> Union[str, None]:
     """Gets abstract for PMID from PM via Entrez"""
     try:
         handle = Entrez.efetch(db="pubmed", id=pmid, retmode="xml")
         xml_data = Entrez.read(handle)
-    except:
-        session_state.abstract = None
-        session_state.fetch_abstract_error = "Unable to fetch abstract"
-        return
-
-    try:
         article = xml_data["PubmedArticle"][0]["MedlineCitation"]["Article"]
         abstract = article["Abstract"]["AbstractText"]
         return abstract[0]
-    except IndexError:
+    except (IndexError, IOError) as e:
         session_state.abstract = None
-        session_state.fetch_abstract_error = "Unable to parse abstract"
+        session_state.fetch_abstract_error = e
+        return None
 
 
 def fetch_summary():
@@ -94,5 +92,5 @@ def query_chatgpt(query: str) -> str:
         messages=messages,
     )
 
-    finish_reason = res.choices[0].finish_reason
+    # finish_reason = res.choices[0].finish_reason
     return res.choices[0].message.content

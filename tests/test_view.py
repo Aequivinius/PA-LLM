@@ -19,3 +19,12 @@ def test_fetch_summary_button():
     at.session_state.abstract = "Lorem ipsum"
     at.run()
     assert not at.button[1].disabled
+
+
+def test_jsonify_button():
+    at = AppTest.from_file("app.py").run()
+    at.session_state.abstract = "Lorem ipsum"
+    at.session_state.pmid = "123"
+    at.button[1].click().run()
+    print(at.session_state.json)
+    assert len(at.session_state.json) > 0

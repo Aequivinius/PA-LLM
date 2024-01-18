@@ -1,13 +1,16 @@
+import json
 import os
 from typing import Union
 
 import google.generativeai as genai
 from Bio import Entrez
+from dotenv import load_dotenv
 from openai import OpenAI as openai
 from streamlit import cache_data, session_state
 
 import constants
 
+load_dotenv(".env")
 Entrez.email = os.environ.get("ENTREZ_MAIL")
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 gpt_client = openai(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -95,3 +98,27 @@ def query_chatgpt(query: str) -> str:
 
     # finish_reason = res.choices[0].finish_reason
     return res.choices[0].message.content
+
+
+def jsonify():
+    session_state.json = jsonify_(
+        **{
+            "text": session_state.abstract,
+            "sourceid": session_state.pmid,
+            "summary": session_state.summary,
+        }
+    )
+
+
+@cache_data
+def jsonify_(text: str, sourceid: int, summary: str) -> str:
+    denotations = [
+        {"id": "T1", "span": {"begin": 0, "end": len(summary) - 1}, "obj": summary}
+    ]
+    jsonifianda = {
+        "text": text,
+        "sourcedb": "PubMed",
+        "sourceid": str(sourceid),
+        "denotations": denotations,
+    }
+    return json.dumps(jsonifianda)

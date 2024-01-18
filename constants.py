@@ -10,6 +10,7 @@ MAX_TOKENS = 500
 SESSION_STATES = {
     "abstract": None,
     "fetch_abstract_error": None,
+    "json": "",
     "llm": "BARD",
     "pmid": None,
     "pmid_validation_error": None,

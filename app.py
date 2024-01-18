@@ -1,3 +1,7 @@
-from view import view
+import view, control
 
-view.display_title()
+control.session_states()
+
+view.title()
+view.pmid()
+view.summarisation()

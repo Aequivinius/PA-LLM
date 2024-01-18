@@ -13,8 +13,8 @@
 - [ ]
 
 # DevOps
-- [ ] proper CI/CD
+- [x] proper CI/CD
      - [x] hooks
-     - [ ] branches with tests
-     - [ ] issues
+     - [x] branches with tests
+     - [x] issues
 - [x] tests

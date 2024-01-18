@@ -1,15 +1,16 @@
+import os
 from typing import Union
 
 import google.generativeai as genai
 from Bio import Entrez
 from openai import OpenAI as openai
-from streamlit import cache_data, secrets, session_state
+from streamlit import cache_data, session_state
 
 import constants
 
-Entrez.email = "nicola.colic@supsi.ch"
-genai.configure(api_key=secrets["GEMINI_API_KEY"])
-gpt_client = openai(api_key=secrets["OPENAI_API_KEY"])
+Entrez.email = os.environ.get("ENTREZ_MAIL")
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+gpt_client = openai(api_key=os.environ.get("OPENAI_API_KEY"))
 
 
 def validate_pmid() -> None:

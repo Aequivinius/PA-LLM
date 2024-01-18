@@ -3,8 +3,6 @@ import streamlit as st
 import constants
 import control
 
-st.set_page_config("Summarisation for biomedical texts", page_icon="🖐️")
-
 
 def block(f):
     def wrapper():
@@ -44,7 +42,7 @@ def pmid():
             on_click=control.fetch_abstract,
             use_container_width=True,
             type="primary",
-            disabled=st.session_state.pmid is None,
+            disabled=st.session_state.pmid is constants.SESSION_STATES["pmid"],
         )
 
     if st.session_state.abstract:
@@ -55,7 +53,7 @@ def pmid():
 
 
 @block
-def summarisation() -> None:
+def summarisation():
     """Select LLM and request summary"""
 
     st.markdown(
@@ -69,7 +67,7 @@ def summarisation() -> None:
             constants.LLMS_,
             label_visibility="collapsed",
             key="llm",
-            disabled=st.session_state.abstract is None,
+            disabled=st.session_state.abstract is constants.SESSION_STATES["abstract"],
             on_change=control.clear_summary,
         )
 
@@ -79,8 +77,22 @@ def summarisation() -> None:
             on_click=control.fetch_summary,
             use_container_width=True,
             type="secondary",
-            disabled=st.session_state.abstract is None,
+            disabled=st.session_state.abstract is constants.SESSION_STATES["abstract"],
         )
 
     if st.session_state.summary:
         st.success(st.session_state.summary)
+        control.jsonify()
+
+
+@block
+def download_json():
+    st.download_button(
+        "⬇️ Let's generate a JSON",
+        data=st.session_state.json,
+        key="jsonify",
+        file_name=f"{st.session_state.pmid}_summary.json",
+        mime="application/json",
+        use_container_width=True,
+        disabled=st.session_state.json is constants.SESSION_STATES["json"],
+    )

@@ -3,6 +3,8 @@ import streamlit as st
 import constants
 import control
 
+st.set_page_config("Summarisation for biomedical texts", page_icon="🖐️")
+
 
 def block(f):
     def wrapper():

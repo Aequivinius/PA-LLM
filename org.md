@@ -4,8 +4,17 @@
 - [ ] upload to PA
 
 # Second Priority
-- [ ] Translation
+- [ ] translation of page
+- [ ] translation in queries
+- [ ] more llms
+
+# Paper
+- [ ] Evaluation
+- [ ]
 
 # DevOps
-- [ ] hooks
+- [ ] proper CI/CD
+     - [x] hooks
+     - [ ] branches with tests
+     - [ ] issues
 - [x] tests

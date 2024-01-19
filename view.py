@@ -108,5 +108,10 @@ def upload():
             disabled=st.session_state.json is constants.SESSION_STATES["json"],
         )
 
-    if st.session_state.upload:
-        st.success(st.session_state.upload)
+    if (
+        st.session_state.upload
+        and st.session_state.summary in st.session_state.upload["blocks"][0]["obj"]
+    ):
+        st.success(
+            f"Uploaded! Go check it out at **[pubannotation.org](https://pubannotation.org/projects/PA-LLM/docs/sourcedb/PubMed/sourceid/{st.session_state.pmid})**! 👏"
+        )

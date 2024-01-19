@@ -127,7 +127,7 @@ def jsonify_(text: str, sourceid: int, summary: str) -> str:
 
 
 def upload():
-    session_state.upload = upload_(session_state.pmid, json.dumps(session_state.json))
+    session_state.upload = upload_(session_state.pmid, session_state.json)
 
 
 def upload_(pmid: int, jsonified: str) -> dict:

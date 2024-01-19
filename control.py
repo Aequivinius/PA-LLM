@@ -61,6 +61,7 @@ def fetch_abstract_(pmid: int) -> Union[str, None]:
 def fetch_summary():
     """Wraps around fetch_summary so we can cache results"""
     session_state.summary = fetch_summary_(session_state.abstract, session_state.llm)
+    jsonify()
 
 
 @cache_data

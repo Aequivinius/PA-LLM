@@ -4,8 +4,8 @@ from streamlit.testing.v1 import AppTest
 def test_fetch_abstract_button():
     """User can only click fetch button when they enter a number"""
     at = AppTest.from_file("app.py").run()
-    at.text_input(key="pmid").set_value("not digits")
-    at.text_input(key="pmid").run()
+    at.text_input(key="pmid_").set_value("not digits")
+    at.text_input(key="pmid_").run()
     assert at.button[0].disabled
     at.text_input(key="pmid_").set_value("33495752")
     at.text_input(key="pmid_").run()

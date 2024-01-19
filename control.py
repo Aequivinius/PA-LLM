@@ -114,14 +114,12 @@ def jsonify():
 
 @cache_data
 def jsonify_(text: str, sourceid: int, summary: str) -> str:
-    denotations = [
-        {"id": "T1", "span": {"begin": 0, "end": len(text) - 1}, "obj": summary}
-    ]
+    blocks = [{"id": "T1", "span": {"begin": 0, "end": len(text) - 1}, "obj": summary}]
     jsonifianda = {
         "text": text,
         "sourcedb": "PubMed",
         "sourceid": str(sourceid),
-        "denotations": denotations,
+        "blocks": blocks,
     }
     return json.dumps(jsonifianda)
 

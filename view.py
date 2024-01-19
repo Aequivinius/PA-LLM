@@ -28,7 +28,7 @@ def pmid():
         st.text_input(
             "Enter a PMID:",
             label_visibility="collapsed",
-            key="pmid_",
+            key="pmid",
             on_change=control.validate_pmid,
             placeholder="for example: 33495752",
         )

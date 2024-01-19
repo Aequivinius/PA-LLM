@@ -4,11 +4,11 @@ from streamlit.testing.v1 import AppTest
 def test_fetch_abstract_button():
     """User can only click fetch button when they enter a number"""
     at = AppTest.from_file("app.py").run()
-    at.text_input(key="pmid_").set_value("not digits")
-    at.text_input(key="pmid_").run()
+    at.text_input(key="pmid").set_value("not digits")
+    at.text_input(key="pmid").run()
     assert at.button[0].disabled
-    at.text_input(key="pmid_").set_value("33495752")
-    at.text_input(key="pmid_").run()
+    at.text_input(key="pmid").set_value("33495752")
+    at.text_input(key="pmid").run()
     assert not at.button[0].disabled
 
 
@@ -25,6 +25,5 @@ def test_jsonify_button():
     at = AppTest.from_file("app.py").run()
     at.session_state.abstract = "Lorem ipsum"
     at.session_state.pmid = "123"
-    at.button[1].click().run()
-    print(at.session_state.json)
+    at.button[1].click().run(timeout=100)
     assert len(at.session_state.json) > 0

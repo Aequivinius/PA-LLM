@@ -18,15 +18,12 @@ PA_URL = "https://pubannotation.org/projects/PA-LLM-test"
 def test_fetch_abstract():
     """Get PubMed abstract for a given PMID"""
 
-    at = AppTest.from_file("app.py", default_timeout=DEFAULT_TIMEOUT).run()
-    at.text_input(key="pmid").set_value(DEFAULT_PMID)
-    at.text_input(key="pmid").run()
-    at.button[0].click().run()
+    abstract = control.fetch_abstract_(DEFAULT_PMID)
 
     with open(os.path.join("tests", f"{DEFAULT_PMID}.txt"), "r") as f:
-        abstract = f.read()
+        abstract_ = f.read()
 
-    assert abstract in at.session_state.abstract
+    assert abstract in abstract_
 
 
 def test_fetch():

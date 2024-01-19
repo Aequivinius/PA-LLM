@@ -28,7 +28,7 @@ def pmid():
         st.text_input(
             "Enter a PMID:",
             label_visibility="collapsed",
-            key="pmid",
+            key="pmid_",
             on_change=control.validate_pmid,
             placeholder="for example: 33495752",
         )
@@ -86,13 +86,27 @@ def summarisation():
 
 
 @block
-def download_json():
-    st.download_button(
-        "⬇️ Let's generate a JSON",
-        data=st.session_state.json,
-        key="jsonify",
-        file_name=f"{st.session_state.pmid}_summary.json",
-        mime="application/json",
-        use_container_width=True,
-        disabled=st.session_state.json is constants.SESSION_STATES["json"],
-    )
+def upload():
+    left, right = st.columns(2)
+    with left:
+        st.button(
+            "⬆️ Let's upload summaries to PubAnnotation",
+            on_click=control.upload,
+            type="primary",
+            use_container_width=True,
+            disabled=st.session_state.json is constants.SESSION_STATES["json"],
+        )
+
+    with right:
+        st.download_button(
+            "⬇️ Let's download the `.json`",
+            data=st.session_state.json,
+            key="jsonify",
+            file_name=f"{st.session_state.pmid}_summary.json",
+            mime="application/json",
+            use_container_width=True,
+            disabled=st.session_state.json is constants.SESSION_STATES["json"],
+        )
+
+    if st.session_state.upload:
+        st.success(st.session_state.upload)

@@ -3,20 +3,24 @@ repos:
   rev: 'v1.8.0'  
   hooks:
   - id: mypy
+    args:
+    - --install-types
+    - --ignore-missing-imports
+    additional_dependencies: [types-requests]
   
 - repo: https://github.com/ambv/black
   rev: '23.12.1'
   hooks:
-    - id: black
+  - id: black
 
 - repo: https://github.com/pycqa/isort
   rev: '5.13.0'
   hooks:
-    - id: isort
-      name: isort (python)
+  - id: isort
+    name: isort (python)
 
 - repo: https://github.com/pycqa/flake8
   rev: '4.0.1'
   hooks:
-  -   id: flake8
-      args: [--max-line-length=131]
+  - id: flake8
+    args: [--max-line-length=131]

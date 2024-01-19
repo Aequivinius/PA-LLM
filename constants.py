@@ -6,6 +6,8 @@ LLMS = {llm: f"query_{llm.lower()}" for llm in LLMS_}
 """token limit for gpt queries"""
 MAX_TOKENS = 500
 
+PA_URL = "https://pubannotation.org/projects/PA-LLM"
+
 """session variables and their defaults"""
 SESSION_STATES = {
     "abstract": None,
@@ -15,6 +17,7 @@ SESSION_STATES = {
     "pmid": None,
     "pmid_validation_error": None,
     "summary": None,
+    "upload": None,
 }
 
 """temperature default for gpt queries"""

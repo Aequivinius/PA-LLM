@@ -3,9 +3,11 @@ import os
 from typing import Union
 
 import google.generativeai as genai
+import requests
 from Bio import Entrez
 from dotenv import load_dotenv
 from openai import OpenAI as openai
+from requests.auth import HTTPBasicAuth
 from streamlit import cache_data, session_state
 
 import constants
@@ -113,7 +115,7 @@ def jsonify():
 @cache_data
 def jsonify_(text: str, sourceid: int, summary: str) -> str:
     denotations = [
-        {"id": "T1", "span": {"begin": 0, "end": len(summary) - 1}, "obj": summary}
+        {"id": "T1", "span": {"begin": 0, "end": len(text) - 1}, "obj": summary}
     ]
     jsonifianda = {
         "text": text,
@@ -122,3 +124,24 @@ def jsonify_(text: str, sourceid: int, summary: str) -> str:
         "denotations": denotations,
     }
     return json.dumps(jsonifianda)
+
+
+def upload():
+    session_state.upload = upload_(session_state.pmid, json.dumps(session_state.json))
+
+
+def upload_(pmid: int, jsonified: str) -> dict:
+    url = (
+        f"{constants.PA_URL}/docs/sourcedb/PubMed/sourceid/{str(pmid)}/annotations.json"
+    )
+
+    headers = {"Content-Type": "application/json"}
+    r = requests.post(
+        url,
+        data=jsonified,
+        headers=headers,
+        auth=HTTPBasicAuth(
+            str(os.environ.get("PA_MAIL")), str(os.environ.get("PA_PASSWORD"))
+        ),
+    )
+    return r.json()

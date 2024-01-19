@@ -131,7 +131,25 @@ def upload():
     )
 
 
+def pa_add_article(pa_url: str, pmid: int) -> dict:
+    url = f"{pa_url}/docs/add.json"
+    payload = f"sourcedb=PubMed&sourceid={str(pmid)}"
+
+    response = requests.request(
+        "POST",
+        url,
+        data=payload,
+        auth=HTTPBasicAuth(
+            str(os.environ.get("PA_MAIL")), str(os.environ.get("PA_PASSWORD"))
+        ),
+    )
+
+    return response.json()
+
+
 def upload_(pa_url: str, pmid: int, jsonified: str) -> dict:
+    pa_add_article(pa_url, pmid)
+
     url = f"{pa_url}/docs/sourcedb/PubMed/sourceid/{str(pmid)}/annotations.json"
 
     headers = {"Content-Type": "application/json"}

@@ -87,6 +87,8 @@ def summarisation():
 
 @block
 def upload():
+    st.markdown("*Use the summary:*")
+
     left, right = st.columns(2)
     with left:
         st.button(

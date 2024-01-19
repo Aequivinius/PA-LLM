@@ -71,6 +71,6 @@ def test_upload():
     summary_ = random_word(25)
     jsonified["blocks"][0]["obj"] = summary_
 
-    r = control.upload_(DEFAULT_PMID, json.dumps(jsonified))
+    r = control.upload_(PA_URL, DEFAULT_PMID, json.dumps(jsonified))
 
     assert summary_ in r["blocks"][0]["obj"]

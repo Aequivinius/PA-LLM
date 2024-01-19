@@ -126,13 +126,13 @@ def jsonify_(text: str, sourceid: int, summary: str) -> str:
 
 
 def upload():
-    session_state.upload = upload_(session_state.pmid, session_state.json)
-
-
-def upload_(pmid: int, jsonified: str) -> dict:
-    url = (
-        f"{constants.PA_URL}/docs/sourcedb/PubMed/sourceid/{str(pmid)}/annotations.json"
+    session_state.upload = upload_(
+        constants.PA_URL, session_state.pmid, session_state.json
     )
+
+
+def upload_(pa_url: str, pmid: int, jsonified: str) -> dict:
+    url = f"{pa_url}/docs/sourcedb/PubMed/sourceid/{str(pmid)}/annotations.json"
 
     headers = {"Content-Type": "application/json"}
     r = requests.post(

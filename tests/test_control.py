@@ -1,26 +1,29 @@
 import json
 import os
+import random
+import string
 
+import requests
+from dotenv import load_dotenv
+from requests.auth import HTTPBasicAuth
 from streamlit.testing.v1 import AppTest
 
 import control
 
 DEFAULT_TIMEOUT = 10
 DEFAULT_PMID = "33495752"
+PA_URL = "https://pubannotation.org/projects/PA-LLM-test"
 
 
 def test_fetch_abstract():
     """Get PubMed abstract for a given PMID"""
 
-    at = AppTest.from_file("app.py", default_timeout=DEFAULT_TIMEOUT).run()
-    at.text_input(key="pmid").set_value(DEFAULT_PMID)
-    at.text_input(key="pmid").run()
-    at.button[0].click().run()
+    abstract = control.fetch_abstract_(DEFAULT_PMID)
 
     with open(os.path.join("tests", f"{DEFAULT_PMID}.txt"), "r") as f:
-        abstract = f.read()
+        abstract_ = f.read()
 
-    assert abstract in at.session_state.abstract
+    assert abstract in abstract_
 
 
 def test_fetch():
@@ -51,3 +54,25 @@ def test_jsonify():
         jsonified_ = json.dumps(json.loads(f.read()))
 
     assert jsonified == jsonified_
+
+
+def random_word(length):
+    letters = string.ascii_lowercase
+    return "".join(random.choice(letters) for i in range(length))
+
+
+def test_upload():
+    r = requests.get(f"{PA_URL}/docs.json")
+    assert DEFAULT_PMID in [doc["sourceid"] for doc in r.json()]
+
+
+def backup():
+    with open(os.path.join("tests", f"{DEFAULT_PMID}.json"), "r") as f:
+        jsonified = json.loads(f.read())
+
+    summary_ = random_word(25)
+    jsonified["blocks"][0]["obj"] = summary_
+
+    r = control.upload_(PA_URL, DEFAULT_PMID, json.dumps(jsonified))
+
+    assert summary_ in r["blocks"][0]["obj"]

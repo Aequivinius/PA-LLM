@@ -1,3 +1,6 @@
+# DEV
+import os
+
 import streamlit as st
 
 import control
@@ -9,4 +12,4 @@ control.session_states()
 view.title()
 view.pmid()
 view.summarisation()
-view.download_json()
+view.upload()

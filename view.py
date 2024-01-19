@@ -86,13 +86,34 @@ def summarisation():
 
 
 @block
-def download_json():
-    st.download_button(
-        "⬇️ Let's generate a JSON",
-        data=st.session_state.json,
-        key="jsonify",
-        file_name=f"{st.session_state.pmid}_summary.json",
-        mime="application/json",
-        use_container_width=True,
-        disabled=st.session_state.json is constants.SESSION_STATES["json"],
-    )
+def upload():
+    st.markdown("*Use the summary:*")
+
+    left, right = st.columns(2)
+    with left:
+        st.button(
+            "⬆️ Let's upload summaries to PubAnnotation",
+            on_click=control.upload,
+            type="primary",
+            use_container_width=True,
+            disabled=st.session_state.json is constants.SESSION_STATES["json"],
+        )
+
+    with right:
+        st.download_button(
+            "⬇️ Let's download the `.json`",
+            data=st.session_state.json,
+            key="jsonify",
+            file_name=f"{st.session_state.pmid}_summary.json",
+            mime="application/json",
+            use_container_width=True,
+            disabled=st.session_state.json is constants.SESSION_STATES["json"],
+        )
+
+    if (
+        st.session_state.upload
+        and st.session_state.summary in st.session_state.upload["blocks"][0]["obj"]
+    ):
+        st.success(
+            f"Uploaded! Go check it out at **[pubannotation.org](https://pubannotation.org/projects/PA-LLM/docs/sourcedb/PubMed/sourceid/{st.session_state.pmid})**! 👏"
+        )

@@ -3,9 +3,11 @@ import os
 from typing import Union
 
 import google.generativeai as genai
+import requests
 from Bio import Entrez
 from dotenv import load_dotenv
 from openai import OpenAI as openai
+from requests.auth import HTTPBasicAuth
 from streamlit import cache_data, session_state
 
 import constants
@@ -59,6 +61,7 @@ def fetch_abstract_(pmid: int) -> Union[str, None]:
 def fetch_summary():
     """Wraps around fetch_summary so we can cache results"""
     session_state.summary = fetch_summary_(session_state.abstract, session_state.llm)
+    jsonify()
 
 
 @cache_data
@@ -112,13 +115,32 @@ def jsonify():
 
 @cache_data
 def jsonify_(text: str, sourceid: int, summary: str) -> str:
-    denotations = [
-        {"id": "T1", "span": {"begin": 0, "end": len(summary) - 1}, "obj": summary}
-    ]
+    blocks = [{"id": "T1", "span": {"begin": 0, "end": len(text) - 1}, "obj": summary}]
     jsonifianda = {
         "text": text,
         "sourcedb": "PubMed",
         "sourceid": str(sourceid),
-        "denotations": denotations,
+        "blocks": blocks,
     }
     return json.dumps(jsonifianda)
+
+
+def upload():
+    session_state.upload = upload_(
+        constants.PA_URL, session_state.pmid, session_state.json
+    )
+
+
+def upload_(pa_url: str, pmid: int, jsonified: str) -> dict:
+    url = f"{pa_url}/docs/sourcedb/PubMed/sourceid/{str(pmid)}/annotations.json"
+
+    headers = {"Content-Type": "application/json"}
+    r = requests.post(
+        url,
+        data=jsonified,
+        headers=headers,
+        auth=HTTPBasicAuth(
+            str(os.environ.get("PA_MAIL")), str(os.environ.get("PA_PASSWORD"))
+        ),
+    )
+    return r.json()

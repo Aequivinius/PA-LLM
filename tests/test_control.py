@@ -65,6 +65,8 @@ def test_upload():
     r = requests.get(f"{PA_URL}/docs.json")
     assert DEFAULT_PMID in [doc["sourceid"] for doc in r.json()]
 
+
+def backup():
     with open(os.path.join("tests", f"{DEFAULT_PMID}.json"), "r") as f:
         jsonified = json.loads(f.read())
 
